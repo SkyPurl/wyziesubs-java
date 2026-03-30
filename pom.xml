@@ -6,14 +6,14 @@
     <modelVersion>4.0.0</modelVersion>
 
     <!-- ===== Coordonnées du projet ===== -->
-    <groupId>io.github.skypurl.wyziesubs</groupId>
+    <groupId>io.github.skypurl</groupId>
     <artifactId>wyziesubs-java</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>WyzieSubs Java SDK</name>
     <description>A Java SDK for the WyzieSubs subtitle API</description>
-    <url>https://github.com/wyziesubs/wyziesubs-java</url>
+    <url>https://github.com/SkyPurl/wyziesubs-java</url>
 
     <!-- ===== Licences ===== -->
     <licenses>
@@ -28,8 +28,6 @@
         <developer>
             <id>SkyPurl</id>
             <name>SkyPurl</name>
-            <!-- Remplace par ton adresse email (ou supprime cette ligne si tu préfères) -->
-            <email>ton-email@exemple.com</email>
             <url>https://github.com/SkyPurl</url>
         </developer>
     </developers>
@@ -139,20 +137,6 @@
                 </executions>
             </plugin>
 
-            <!-- GPG Signing (requis Maven Central) -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-gpg-plugin</artifactId>
-                <version>3.2.7</version>
-                <executions>
-                    <execution>
-                        <id>sign-artifacts</id>
-                        <phase>verify</phase>
-                        <goals><goal>sign</goal></goals>
-                    </execution>
-                </executions>
-            </plugin>
-
             <!-- Publication sur Maven Central (nouveau portail) -->
             <plugin>
                 <groupId>org.sonatype.central</groupId>
@@ -167,5 +151,30 @@
 
         </plugins>
     </build>
+
+    <!-- ===== Profils Maven ===== -->
+    <profiles>
+        <!-- Profil de release : signature GPG + déploiement Maven Central -->
+        <profile>
+            <id>release</id>
+            <build>
+                <plugins>
+                    <!-- GPG Signing (uniquement pour les releases) -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>3.2.7</version>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals><goal>sign</goal></goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
 </project>

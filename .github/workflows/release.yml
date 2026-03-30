@@ -45,6 +45,13 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Set up JDK 25
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '25'
+          cache: 'maven'
+
       - name: Extract version from pom.xml
         id: version
         run: |
@@ -146,7 +153,7 @@ jobs:
           MAVEN_USERNAME: ${{ secrets.MAVEN_USERNAME }}
           MAVEN_PASSWORD: ${{ secrets.MAVEN_PASSWORD }}
           GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
-        run: mvn deploy -DskipTests
+        run: mvn -Prelease deploy -DskipTests
 
       - name: Publish deployment summary
         run: |
