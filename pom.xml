@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+         https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <!-- ===== Coordonnées du projet ===== -->
+    <groupId>io.github.skypurl.wyziesubs</groupId>
+    <artifactId>wyziesubs-java</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
+
+    <name>WyzieSubs Java SDK</name>
+    <description>A Java SDK for the WyzieSubs subtitle API</description>
+    <url>https://github.com/wyziesubs/wyziesubs-java</url>
+
+    <!-- ===== Licences ===== -->
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>https://opensource.org/licenses/MIT</url>
+        </license>
+    </licenses>
+
+    <!-- ===== Développeurs (requis pour Maven Central) ===== -->
+    <developers>
+        <developer>
+            <id>SkyPurl</id>
+            <name>SkyPurl</name>
+            <!-- Remplace par ton adresse email (ou supprime cette ligne si tu préfères) -->
+            <email>ton-email@exemple.com</email>
+            <url>https://github.com/SkyPurl</url>
+        </developer>
+    </developers>
+
+    <!-- ===== SCM (requis pour Maven Central) ===== -->
+    <scm>
+        <connection>scm:git:git://github.com/SkyPurl/wyziesubs-java.git</connection>
+        <developerConnection>scm:git:ssh://git@github.com:SkyPurl/wyziesubs-java.git</developerConnection>
+        <url>https://github.com/SkyPurl/wyziesubs-java</url>
+    </scm>
+
+    <!-- ===== Propriétés ===== -->
+    <properties>
+        <java.version>25</java.version>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <!-- Versions des dépendances -->
+        <jackson.version>2.18.2</jackson.version>
+        <junit.version>5.11.4</junit.version>
+        <mockito.version>5.14.2</mockito.version>
+    </properties>
+
+    <!-- ===== Dépendances ===== -->
+    <dependencies>
+
+        <!-- Jackson : seule dépendance runtime -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+
+        <!-- Tests -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>${mockito.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-junit-jupiter</artifactId>
+            <version>${mockito.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+    </dependencies>
+
+    <!-- ===== Build & Plugins ===== -->
+    <build>
+        <plugins>
+
+            <!-- Compiler avec support Java 25 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.13.0</version>
+                <configuration>
+                    <release>25</release>
+                    <!-- Active les preview features si nécessaire -->
+                    <!-- <compilerArgs><arg>- -enable-preview</arg></compilerArgs> -->
+                </configuration>
+            </plugin>
+
+            <!-- Tests avec Surefire -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.5.2</version>
+                <configuration>
+                    <!-- Force Byte Buddy à accepter Java 25 et cache les warnings Java Agents -->
+                    <argLine>-Dnet.bytebuddy.experimental=true -XX:+EnableDynamicAgentLoading</argLine>
+                </configuration>
+            </plugin>
+
+            <!-- Sources JAR (requis Maven Central) -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>3.3.1</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals><goal>jar-no-fork</goal></goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- Javadoc JAR (requis Maven Central) -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.11.1</version>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals><goal>jar</goal></goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- GPG Signing (requis Maven Central) -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <version>3.2.7</version>
+                <executions>
+                    <execution>
+                        <id>sign-artifacts</id>
+                        <phase>verify</phase>
+                        <goals><goal>sign</goal></goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- Publication sur Maven Central (nouveau portail) -->
+            <plugin>
+                <groupId>org.sonatype.central</groupId>
+                <artifactId>central-publishing-maven-plugin</artifactId>
+                <version>0.6.0</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <publishingServerId>central</publishingServerId>
+                    <autoPublish>false</autoPublish> <!-- Manuel pour contrôle -->
+                </configuration>
+            </plugin>
+
+        </plugins>
+    </build>
+
+</project>
