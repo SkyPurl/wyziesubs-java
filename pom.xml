@@ -8,7 +8,7 @@
     <!-- ===== Coordonnées du projet ===== -->
     <groupId>io.github.skypurl</groupId>
     <artifactId>wyziesubs-java</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.0</version>
     <packaging>jar</packaging>
 
     <name>WyzieSubs Java SDK</name>
