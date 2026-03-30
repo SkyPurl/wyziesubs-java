@@ -1,30 +1,19 @@
 version: 2
-
 updates:
-  # Maven dependencies
   - package-ecosystem: "maven"
     directory: "/"
     schedule:
       interval: "weekly"
-      day: "monday"
-      time: "09:00"
+    target-branch: "dev"
     open-pull-requests-limit: 5
-    labels:
-      - "dependencies"
-      - "maven"
-    commit-message:
-      prefix: "chore(deps)"
+    ignore:
+      # Ignore les mises à jour du maven-gpg-plugin (versions instables)
+      - dependency-name: "org.apache.maven.plugins:maven-gpg-plugin"
+        update-types: ["version-update:semver-patch"]
 
-  # GitHub Actions
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
       interval: "weekly"
-      day: "monday"
-      time: "09:00"
+    target-branch: "dev"
     open-pull-requests-limit: 5
-    labels:
-      - "dependencies"
-      - "github-actions"
-    commit-message:
-      prefix: "chore(ci)"
