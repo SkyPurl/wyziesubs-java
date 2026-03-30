@@ -6,8 +6,12 @@ on:
       - main
       - dev
   pull_request:
-    branches:
-      - '**'
+
+# Permissions pour le workflow
+permissions:
+  contents: read
+  checks: write        # Nécessaire pour publish-unit-test-result-action
+  pull-requests: write # Nécessaire pour commenter sur les PRs
 
 jobs:
   build:
@@ -35,8 +39,27 @@ jobs:
           name: test-results-${{ github.sha }}
           path: target/surefire-reports/
 
-      - name: Comment test results on PR
-        if: github.event_name == 'pull_request' && always()
+      - name: Publish test results
+        if: always()
         uses: EnricoMi/publish-unit-test-result-action@v2
         with:
           files: target/surefire-reports/*.xml
+          check_name: 'Test Results'
+          comment_mode: 'off'  # Désactive les commentaires si tu ne veux pas polluer les PRs
+
+      - name: Comment PR with test results
+        if: github.event_name == 'pull_request' && always()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const testResults = fs.existsSync('target/surefire-reports') 
+              ? '✅ Tests passed!' 
+              : '❌ Tests failed!';
+            
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `## 🧪 Test Results\n\n${testResults}\n\nCheck the [workflow run](${context.payload.repository.html_url}/actions/runs/${context.runId}) for details.`
+            });
