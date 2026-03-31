@@ -4,6 +4,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.net.URI;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -11,80 +13,104 @@ import static org.junit.jupiter.api.Assertions.*;
 class UrlBuilderTest {
 
     @Test
-    @DisplayName("build() retourne l'URL de base inchangée si aucun paramètre n'est ajouté")
-    void build_noParams_returnsBaseUrlUnchanged() {
+    @DisplayName("build() should return the base URL when no parameters are added")
+    void build_noParams_returnsBaseUrl() {
         URI uri = UrlBuilder.of("https://sub.wyzie.io/search").build();
 
         assertEquals("https://sub.wyzie.io/search", uri.toString());
     }
 
     @Test
-    @DisplayName("build() ajoute le séparateur '?' avant le premier paramètre")
-    void build_withOneParam_addsQuestionMark() {
+    @DisplayName("addQueryParam() should return the same instance for chaining")
+    void addQueryParam_returnsSameInstance() {
+        UrlBuilder builder = UrlBuilder.of("https://sub.wyzie.io/search");
+
+        UrlBuilder result = builder.addQueryParam("id", "tt1234567");
+
+        assertSame(builder, result);
+    }
+
+    @Test
+    @DisplayName("build() should add the first query separator")
+    void build_firstParam_addsQuestionMark() {
         URI uri = UrlBuilder.of("https://sub.wyzie.io/search")
                 .addQueryParam("id", "tt1234567")
                 .build();
 
-        assertTrue(uri.toString().contains("?"));
-        assertTrue(uri.toString().contains("id=tt1234567"));
+        assertEquals("https://sub.wyzie.io/search?id=tt1234567", uri.toString());
     }
 
     @Test
-    @DisplayName("addQueryParam() encode les espaces en UTF-8 (%20 ou +)")
-    void addQueryParam_valueWithSpaces_encodesCorrectly() {
-        URI uri = UrlBuilder.of("https://sub.wyzie.io/search")
-                .addQueryParam("fileName", "the martian.srt")
-                .build();
-
-        String raw = uri.toString();
-        // URLEncoder encode les espaces en '+', URI.toString() les conserve encodés
-        assertTrue(raw.contains("the+martian.srt") || raw.contains("the%20martian.srt"),
-                "Les espaces doivent être encodés en UTF-8, URI obtenu : " + raw);
-    }
-
-    @Test
-    @DisplayName("addQueryParam() encode les caractères spéciaux (accents, &, =)")
-    void addQueryParam_specialCharacters_encodesCorrectly() {
-        URI uri = UrlBuilder.of("https://sub.wyzie.io/search")
-                .addQueryParam("fileName", "été & été.srt")
-                .build();
-
-        String raw = uri.toString();
-        assertFalse(raw.contains(" "),  "L'URI ne doit pas contenir d'espaces bruts");
-        assertFalse(raw.contains("&fileName"), "Le '&' de la valeur ne doit pas être confondu avec un séparateur");
-    }
-
-    @Test
-    @DisplayName("addQueryParam() ignore silencieusement les valeurs null")
+    @DisplayName("addQueryParam() should ignore null values")
     void addQueryParam_nullValue_isIgnored() {
         URI uri = UrlBuilder.of("https://sub.wyzie.io/search")
-                .addQueryParam("id",       "tt1234567")
+                .addQueryParam("id", "tt1234567")
                 .addQueryParam("language", null)
-                .addQueryParam("format",   null)
                 .build();
 
         String raw = uri.toString();
-        assertFalse(raw.contains("language"), "Le paramètre 'language' null ne doit pas apparaître");
-        assertFalse(raw.contains("format"),   "Le paramètre 'format' null ne doit pas apparaître");
-        assertTrue(raw.contains("id=tt1234567"), "Le paramètre 'id' valide doit être présent");
+        assertEquals("https://sub.wyzie.io/search?id=tt1234567", raw);
+        assertFalse(raw.contains("language"));
     }
 
     @Test
-    @DisplayName("addQueryParam() joint plusieurs paramètres avec '&'")
-    void addQueryParam_multipleParams_joinedWithAmpersand() {
+    @DisplayName("addQueryParam() should keep empty values")
+    void addQueryParam_emptyValue_isRetained() {
         URI uri = UrlBuilder.of("https://sub.wyzie.io/search")
-                .addQueryParam("id",       "tt1234567")
-                .addQueryParam("language", "en")
-                .addQueryParam("format",   "srt")
+                .addQueryParam("language", "")
                 .build();
 
-        String raw = uri.toString();
-        // Vérifie la présence des 3 paramètres
-        assertTrue(raw.contains("id=tt1234567"));
-        assertTrue(raw.contains("language=en"));
-        assertTrue(raw.contains("format=srt"));
-        // Vérifie la structure avec '&'
-        assertEquals(2, raw.chars().filter(c -> c == '&').count(),
-                "3 paramètres doivent être séparés par exactement 2 '&'");
+        assertEquals("https://sub.wyzie.io/search?language=", uri.toString());
+    }
+
+    @Test
+    @DisplayName("addQueryParam() should reject a null key")
+    void addQueryParam_nullKey_throwsNullPointerException() {
+        UrlBuilder builder = UrlBuilder.of("https://sub.wyzie.io/search");
+
+        assertThrows(NullPointerException.class, () -> builder.addQueryParam(null, "value"));
+    }
+
+    @Test
+    @DisplayName("addQueryParam() should encode special characters with UTF-8")
+    void addQueryParam_specialCharacters_encodesWithUrlEncoder() {
+        String value = "été & été.srt";
+
+        URI uri = UrlBuilder.of("https://sub.wyzie.io/search")
+                .addQueryParam("fileName", value)
+                .build();
+
+        String expected = "fileName=" + URLEncoder.encode(value, StandardCharsets.UTF_8);
+        assertTrue(uri.toString().contains(expected));
+        assertFalse(uri.toString().contains(" été"));
+    }
+
+    @Test
+    @DisplayName("build() should preserve insertion order")
+    void build_multipleParams_preservesInsertionOrder() {
+        URI uri = UrlBuilder.of("https://sub.wyzie.io/search")
+                .addQueryParam("id", "tt1234567")
+                .addQueryParam("language", "en")
+                .addQueryParam("format", "srt")
+                .build();
+
+        assertEquals(
+                "https://sub.wyzie.io/search?id=tt1234567&language=en&format=srt",
+                uri.toString()
+        );
+    }
+
+    @Test
+    @DisplayName("build() should be stable across repeated calls")
+    void build_multipleCalls_returnsSameUri() {
+        UrlBuilder builder = UrlBuilder.of("https://sub.wyzie.io/search")
+                .addQueryParam("id", "tt1234567")
+                .addQueryParam("language", "en");
+
+        URI first = builder.build();
+        URI second = builder.build();
+
+        assertEquals(first, second);
+        assertEquals(first.toString(), second.toString());
     }
 }

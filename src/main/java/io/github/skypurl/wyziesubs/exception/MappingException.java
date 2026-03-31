@@ -1,22 +1,21 @@
 package io.github.skypurl.wyziesubs.exception;
 
 /**
- * Exception levée lors d'un échec de désérialisation JSON.
+ * Thrown when JSON deserialization fails.
  *
- * <p>Encapsule les {@code JsonProcessingException} de Jackson afin que
- * l'utilisateur du SDK n'ait pas à importer ou connaître les exceptions
- * internes de Jackson dans ses propres blocs {@code catch}.</p>
+ * <p>Wraps Jackson's {@code JsonProcessingException} so SDK users don't
+ * need to handle internal Jackson exceptions in their catch blocks.</p>
  *
- * <p>La cause originelle (Jackson) reste accessible via {@link #getCause()}
- * pour le debug avancé.</p>
+ * <p>The original cause remains accessible via {@link #getCause()} for
+ * advanced debugging.</p>
  */
 public final class MappingException extends WyzieSubsException {
 
     /**
-     * Crée une {@code MappingException} en encapsulant l'exception Jackson.
+     * Constructs a {@code MappingException} wrapping a Jackson exception.
      *
-     * @param message Description du contexte de l'erreur (ex: quel endpoint).
-     * @param cause   L'exception Jackson d'origine ({@code JsonProcessingException}).
+     * @param message Error context description (e.g., which endpoint failed).
+     * @param cause   The original Jackson exception ({@code JsonProcessingException}).
      */
     public MappingException(String message, Throwable cause) {
         super(message, cause);

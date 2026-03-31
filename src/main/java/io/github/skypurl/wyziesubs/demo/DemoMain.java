@@ -15,9 +15,9 @@ import java.nio.file.Paths;
 import java.util.List;
 
 /**
- * Classe de démonstration du SDK WyzieSubs Java.
+ * Demonstration class for the WyzieSubs Java SDK.
  *
- * <p>Pour exécuter :</p>
+ * <p>To run this demo:</p>
  * <pre>
  * export WYZIE_API_KEY="your-api-key-here"
  * mvn exec:java -Dexec.mainClass="io.github.skypurl.wyziesubs.demo.DemoMain"
@@ -26,66 +26,66 @@ import java.util.List;
 public class DemoMain {
 
     public static void main(String[] args) {
-        // 1. Récupère la clé API depuis les variables d'environnement
+        // 1. Retrieve API key from environment variables
         String apiKey = System.getenv("WYZIE_API_KEY");
         if (apiKey == null || apiKey.isBlank()) {
-            System.err.println("❌ Erreur : La variable d'environnement WYZIE_API_KEY n'est pas définie.");
-            System.err.println("💡 Utilise : export WYZIE_API_KEY=\"your-api-key-here\"");
+            System.err.println("❌ Error: WYZIE_API_KEY environment variable is not set.");
+            System.err.println("💡 Use: export WYZIE_API_KEY=\"your-api-key-here\"");
             System.exit(1);
         }
 
-        System.out.println("🚀 Démarrage de la démo WyzieSubs Java SDK\n");
+        System.out.println("🚀 Starting WyzieSubs Java SDK Demo\n");
 
-        // 2. Crée le client avec la configuration par défaut
+        // 2. Initialize client with default configuration
         WyzieSubsConfig config = WyzieSubsConfig.defaultWithApiKey(apiKey);
         WyzieSubsClient client = new DefaultWyzieSubsClient(config);
 
-        // 3. Test 1 : Récupère les sources activées
-        System.out.println("📡 Test 1 : Récupération des sources activées...");
+        // 3. Test 1: Fetch enabled sources
+        System.out.println("📡 Test 1: Fetching enabled sources...");
         testGetEnabledSources(client);
 
-        // 4. Test 2 : Recherche de sous-titres pour "The Martian" (IMDb: tt3659388)
-        System.out.println("\n🔍 Test 2 : Recherche de sous-titres pour 'The Martian'...");
+        // 4. Test 2: Search subtitles for "The Martian" (IMDb: tt3659388)
+        System.out.println("\n🔍 Test 2: Searching subtitles for 'The Martian'...");
         List<Subtitle> subtitles = testSearch(client);
 
-        // 5. Test 3 : Téléchargement du premier sous-titre trouvé
+        // 5. Test 3: Download the first subtitle found
         if (!subtitles.isEmpty()) {
-            System.out.println("\n⬇️  Test 3 : Téléchargement du premier sous-titre...");
+            System.out.println("\n⬇️  Test 3: Downloading the first subtitle...");
             testDownload(client, subtitles.get(0));
         } else {
-            System.out.println("\n⚠️  Aucun sous-titre trouvé, impossible de tester le téléchargement.");
+            System.out.println("\n⚠️  No subtitles found, skipping download test.");
         }
 
-        System.out.println("\n✅ Démo terminée avec succès !");
+        System.out.println("\n✅ Demo completed successfully!");
     }
 
-    // -------------------------------------------------------------------------
-    // Test 1 : getEnabledSources()
-    // -------------------------------------------------------------------------
+    // ----
+    // Test 1: getEnabledSources()
+    // ----
 
     private static void testGetEnabledSources(WyzieSubsClient client) {
         try {
             SourcesResponse response = client.getEnabledSources()
                     .exceptionally(ex -> {
-                        System.err.println("❌ Erreur lors de la récupération des sources : " + ex.getMessage());
+                        System.err.println("❌ Error fetching sources: " + ex.getMessage());
                         return new SourcesResponse(List.of());
                     })
                     .join();
 
             if (response.sources().isEmpty()) {
-                System.out.println("⚠️  Aucune source activée trouvée.");
+                System.out.println("⚠️  No enabled sources found.");
             } else {
-                System.out.println("✅ Sources activées (" + response.sources().size() + ") :");
+                System.out.println("✅ Enabled sources (" + response.sources().size() + "):");
                 response.sources().forEach(source -> System.out.println("   - " + source));
             }
         } catch (Exception e) {
-            System.err.println("❌ Exception inattendue : " + e.getMessage());
+            System.err.println("❌ Unexpected exception: " + e.getMessage());
         }
     }
 
-    // -------------------------------------------------------------------------
-    // Test 2 : search()
-    // -------------------------------------------------------------------------
+    // ----
+    // Test 2: search()
+    // ----
 
     private static List<Subtitle> testSearch(WyzieSubsClient client) {
         SearchRequest request = SearchRequest.builder("tt3659388")  // The Martian
@@ -97,64 +97,64 @@ public class DemoMain {
         try {
             List<Subtitle> subtitles = client.search(request)
                     .exceptionally(ex -> {
-                        System.err.println("❌ Erreur lors de la recherche : " + ex.getMessage());
+                        System.err.println("❌ Error during search: " + ex.getMessage());
                         return List.of();
                     })
                     .join();
 
             if (subtitles.isEmpty()) {
-                System.out.println("⚠️  Aucun sous-titre trouvé pour cette recherche.");
+                System.out.println("⚠️  No subtitles found for this search.");
             } else {
-                System.out.println("✅ Sous-titres trouvés (" + subtitles.size() + ") :");
+                System.out.println("✅ Subtitles found (" + subtitles.size() + "):");
                 subtitles.stream()
-                        .limit(5)  // Affiche seulement les 5 premiers
+                        .limit(5)  // Display only the first 5 results
                         .forEach(subtitle -> {
                             System.out.println("   ┌─ ID: " + subtitle.id());
-                            System.out.println("   ├─ Langue: " + subtitle.display() + " (" + subtitle.language() + ")");
+                            System.out.println("   ├─ Language: " + subtitle.display() + " (" + subtitle.language() + ")");
                             System.out.println("   ├─ Format: " + subtitle.format());
                             System.out.println("   ├─ Source: " + subtitle.source());
-                            System.out.println("   ├─ Fichier: " + subtitle.fileName());
+                            System.out.println("   ├─ Filename: " + subtitle.fileName());
                             System.out.println("   └─ URL: " + subtitle.url());
                             System.out.println();
                         });
 
                 if (subtitles.size() > 5) {
-                    System.out.println("   ... et " + (subtitles.size() - 5) + " autres résultats.");
+                    System.out.println("   ... and " + (subtitles.size() - 5) + " more results.");
                 }
             }
 
             return subtitles;
         } catch (Exception e) {
-            System.err.println("❌ Exception inattendue : " + e.getMessage());
+            System.err.println("❌ Unexpected exception: " + e.getMessage());
             return List.of();
         }
     }
 
-    // -------------------------------------------------------------------------
-    // Test 3 : download()
-    // -------------------------------------------------------------------------
+    // ----
+    // Test 3: download()
+    // ----
 
     private static void testDownload(WyzieSubsClient client, Subtitle subtitle) {
         Path destination = Paths.get("demo-subtitle-" + subtitle.id() + "." + subtitle.format());
 
         try {
-            System.out.println("📥 Téléchargement de : " + subtitle.fileName());
-            System.out.println("📂 Destination : " + destination.toAbsolutePath());
+            System.out.println("📥 Downloading: " + subtitle.fileName());
+            System.out.println("📂 Destination: " + destination.toAbsolutePath());
 
             Path downloadedFile = client.download(subtitle, destination)
                     .exceptionally(ex -> {
-                        System.err.println("❌ Erreur lors du téléchargement : " + ex.getMessage());
+                        System.err.println("❌ Error during download: " + ex.getMessage());
                         return null;
                     })
                     .join();
 
             if (downloadedFile != null) {
-                System.out.println("✅ Téléchargement réussi !");
-                System.out.println("📄 Fichier sauvegardé : " + downloadedFile.toAbsolutePath());
-                System.out.println("📊 Taille : " + downloadedFile.toFile().length() + " octets");
+                System.out.println("✅ Download successful!");
+                System.out.println("📄 File saved: " + downloadedFile.toAbsolutePath());
+                System.out.println("📊 Size: " + downloadedFile.toFile().length() + " bytes");
             }
         } catch (Exception e) {
-            System.err.println("❌ Exception inattendue : " + e.getMessage());
+            System.err.println("❌ Unexpected exception: " + e.getMessage());
         }
     }
 }

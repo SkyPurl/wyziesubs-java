@@ -1,28 +1,27 @@
 package io.github.skypurl.wyziesubs.exception;
 
 /**
- * Exception racine du SDK WyzieSubs.
+ * Base exception for the WyzieSubs SDK.
  *
- * <p>Toutes les exceptions métier du SDK étendent cette classe, ce qui permet
- * à l'utilisateur de capturer l'ensemble des erreurs SDK avec un seul
- * {@code catch (WyzieSubsException e)} si nécessaire.</p>
+ * <p>All SDK-specific exceptions extend this class, allowing users to
+ * catch all SDK errors with a single {@code catch (WyzieSubsException e)} block.</p>
  */
 public class WyzieSubsException extends RuntimeException {
 
     /**
-     * Crée une exception avec un message descriptif.
+     * Constructs a new exception with the specified detail message.
      *
-     * @param message Description de l'erreur.
+     * @param message Error description.
      */
     public WyzieSubsException(String message) {
         super(message);
     }
 
     /**
-     * Crée une exception avec un message descriptif et la cause originelle.
+     * Constructs a new exception with the specified detail message and cause.
      *
-     * @param message Description de l'erreur.
-     * @param cause   Exception d'origine ayant provoqué cette erreur.
+     * @param message Error description.
+     * @param cause   The underlying cause of the error.
      */
     public WyzieSubsException(String message, Throwable cause) {
         super(message, cause);

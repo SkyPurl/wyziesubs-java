@@ -13,10 +13,10 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
- * Représente une requête de recherche de sous-titres immuable.
+ * Represents an immutable subtitle search request.
  *
- * <p>Utilise un pattern Builder strict. Seul {@code id} est obligatoire.
- * Exemple :</p>
+ * <p>Uses a strict Builder pattern. Only {@code id} is mandatory.
+ * Usage example:</p>
  * <pre>{@code
  * SearchRequest request = SearchRequest.builder("tt1234567")
  *         .languages(Language.FRENCH, Language.ENGLISH)
@@ -56,31 +56,31 @@ public final class SearchRequest {
         this.refresh   = builder.refresh;
     }
 
-    // -------------------------------------------------------------------------
-    // Point d'entrée du Builder
-    // -------------------------------------------------------------------------
+    // ----
+    // Builder Entry Point
+    // ----
 
     /**
-     * Retourne un nouveau {@link Builder} avec l'identifiant du média obligatoire.
+     * Returns a new {@link Builder} with the required media identifier.
      *
-     * @param id Identifiant IMDb ou TMDB du média (ex: {@code "tt1234567"}).
-     * @return Un {@link Builder} prêt à être configuré.
+     * @param id IMDb or TMDB media identifier (e.g., {@code "tt1234567"}).
+     * @return A {@link Builder} instance ready for configuration.
      */
     public static Builder builder(String id) {
         return new Builder(id);
     }
 
-    // -------------------------------------------------------------------------
-    // Conversion vers UrlBuilder
-    // -------------------------------------------------------------------------
+    // ----
+    // UrlBuilder Conversion
+    // ----
 
     /**
-     * Peuple un {@link UrlBuilder} avec tous les paramètres non-null de cette requête.
+     * Populates a {@link UrlBuilder} with all non-null parameters from this request.
      *
-     * <p>Les listes d'enums sont jointes par des virgules via leur méthode
-     * {@link ApiParameter#getValue()} (ex: {@code "en,fr"}).</p>
+     * <p>Enum lists are joined by commas using their {@link ApiParameter#getValue()}
+     * method (e.g., {@code "en,fr"}).</p>
      *
-     * @param urlBuilder Le {@link UrlBuilder} à peupler.
+     * @param urlBuilder The {@link UrlBuilder} to populate.
      */
     public void populate(UrlBuilder urlBuilder) {
         urlBuilder.addQueryParam("id",       id);
@@ -95,23 +95,23 @@ public final class SearchRequest {
         urlBuilder.addQueryParam("origin",   joinParameters(origins));
         urlBuilder.addQueryParam("refresh",  refresh  != null ? refresh.toString() : null);
 
-        // Les releases sont des String brutes, pas des ApiParameter
+        // Releases are raw Strings, not ApiParameters
         if (!releases.isEmpty()) {
             urlBuilder.addQueryParam("releases", String.join(",", releases));
         }
     }
 
-    // -------------------------------------------------------------------------
-    // Méthode utilitaire privée
-    // -------------------------------------------------------------------------
+    // ----
+    // Private Utility Methods
+    // ----
 
     /**
-     * Joint les valeurs d'une liste de {@link ApiParameter} avec des virgules.
-     * Retourne {@code null} si la liste est vide (ignoré par {@link UrlBuilder}).
+     * Joins values from a list of {@link ApiParameter} with commas.
+     * Returns {@code null} if the list is empty (ignored by {@link UrlBuilder}).
      *
-     * @param params Liste de paramètres (enums implémentant {@link ApiParameter}).
-     * @param <T>    Type borné à {@link ApiParameter}.
-     * @return Chaîne jointe (ex: {@code "en,fr"}) ou {@code null}.
+     * @param params List of parameters (enums implementing {@link ApiParameter}).
+     * @param <T>    Type bounded to {@link ApiParameter}.
+     * @return Joined string (e.g., {@code "en,fr"}) or {@code null}.
      */
     private <T extends ApiParameter> String joinParameters(List<T> params) {
         if (params.isEmpty()) {
@@ -122,9 +122,9 @@ public final class SearchRequest {
                 .collect(Collectors.joining(","));
     }
 
-    // -------------------------------------------------------------------------
+    // ----
     // Getters
-    // -------------------------------------------------------------------------
+    // ----
 
     public String getId()                    { return id;        }
     public Integer getSeason()               { return season;    }
@@ -139,9 +139,9 @@ public final class SearchRequest {
     public List<MediaOrigin> getOrigins()    { return origins;   }
     public Boolean getRefresh()              { return refresh;   }
 
-    // -------------------------------------------------------------------------
-    // Builder
-    // -------------------------------------------------------------------------
+    // ----
+    // Builder Implementation
+    // ----
 
     public static final class Builder {
 
@@ -195,10 +195,10 @@ public final class SearchRequest {
         }
 
         /**
-         * Construit et retourne l'instance {@link SearchRequest} immuable.
+         * Builds and returns the immutable {@link SearchRequest} instance.
          *
-         * @return Une nouvelle instance {@link SearchRequest}.
-         * @throws NullPointerException si {@code id} est null.
+         * @return A new {@link SearchRequest} instance.
+         * @throws NullPointerException if {@code id} is null.
          */
         public SearchRequest build() {
             return new SearchRequest(this);

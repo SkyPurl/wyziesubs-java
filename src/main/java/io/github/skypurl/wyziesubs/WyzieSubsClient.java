@@ -9,14 +9,13 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 /**
- * Interface principale du SDK WyzieSubs.
+ * Main interface for the WyzieSubs SDK.
  *
- * <p>Toutes les opérations sont asynchrones et retournent des
- * {@link CompletableFuture}. Les erreurs HTTP sont propagées via
- * {@link io.github.skypurl.wyziesubs.exception.ApiException} et les erreurs
- * de désérialisation via {@link io.github.skypurl.wyziesubs.exception.MappingException}.</p>
+ * <p>All operations are asynchronous and return {@link CompletableFuture}.
+ * HTTP errors are propagated via {@link io.github.skypurl.wyziesubs.exception.ApiException}
+ * and deserialization errors via {@link io.github.skypurl.wyziesubs.exception.MappingException}.</p>
  *
- * <p>Exemple d'utilisation :</p>
+ * <p>Usage example:</p>
  * <pre>{@code
  * WyzieSubsConfig config = WyzieSubsConfig.defaultWithApiKey("my-api-key");
  * WyzieSubsClient client = new DefaultWyzieSubsClient(config);
@@ -32,26 +31,26 @@ import java.util.concurrent.CompletableFuture;
 public interface WyzieSubsClient {
 
     /**
-     * Récupère la liste des sources de sous-titres activées sur l'instance API.
+     * Retrieves the list of subtitle sources enabled on the API instance.
      *
-     * @return Un {@link CompletableFuture} contenant la {@link SourcesResponse}.
+     * @return A {@link CompletableFuture} containing the {@link SourcesResponse}.
      */
     CompletableFuture<SourcesResponse> getEnabledSources();
 
     /**
-     * Recherche des sous-titres correspondant aux critères de la requête.
+     * Searches for subtitles matching the request criteria.
      *
-     * @param request Les critères de recherche (voir {@link SearchRequest}).
-     * @return Un {@link CompletableFuture} contenant la liste des {@link Subtitle} trouvés.
+     * @param request Search criteria (see {@link SearchRequest}).
+     * @return A {@link CompletableFuture} containing the list of found {@link Subtitle}.
      */
     CompletableFuture<List<Subtitle>> search(SearchRequest request);
 
     /**
-     * Télécharge un fichier de sous-titres directement sur le disque.
+     * Downloads a subtitle file directly to disk.
      *
-     * @param subtitle    Le sous-titre à télécharger (doit avoir une {@code url} non nulle).
-     * @param destination Le {@link Path} de destination sur le système de fichiers.
-     * @return Un {@link CompletableFuture} contenant le {@link Path} du fichier téléchargé.
+     * @param subtitle    The subtitle to download (must have a non-null {@code url}).
+     * @param destination The destination {@link Path} on the file system.
+     * @return A {@link CompletableFuture} containing the {@link Path} of the downloaded file.
      */
     CompletableFuture<Path> download(Subtitle subtitle, Path destination);
 }

@@ -7,28 +7,27 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.skypurl.wyziesubs.exception.MappingException;
 
 /**
- * Utilitaire de désérialisation JSON centralisé.
+ * Centralized JSON deserialization utility.
  *
- * <p>Expose une instance unique et pré-configurée de {@link ObjectMapper}.
- * Toutes les erreurs Jackson sont encapsulées en {@link MappingException}
- * afin de ne pas exposer les dépendances internes au consommateur du SDK.</p>
+ * <p>Exposes a single, pre-configured {@link ObjectMapper} instance.
+ * Jackson-specific errors are wrapped in {@link MappingException} to
+ * avoid exposing internal dependencies to the SDK consumer.</p>
  */
 public final class JsonMapper {
 
     private static final ObjectMapper INSTANCE = new ObjectMapper()
             .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
-    // Classe utilitaire : pas d'instanciation
     private JsonMapper() {}
 
     /**
-     * Désérialise un JSON vers un objet du type {@code clazz}.
+     * Deserializes JSON into an object of type {@code clazz}.
      *
-     * @param json  Chaîne JSON à désérialiser.
-     * @param clazz Classe cible.
-     * @param <T>   Type de retour.
-     * @return Instance désérialisée.
-     * @throws MappingException si le JSON est invalide ou incompatible.
+     * @param json  JSON string to deserialize.
+     * @param clazz Target class.
+     * @param <T>   Return type.
+     * @return Deserialized instance.
+     * @throws MappingException if JSON is invalid or incompatible.
      */
     public static <T> T fromJson(String json, Class<T> clazz) {
         try {
@@ -42,18 +41,18 @@ public final class JsonMapper {
     }
 
     /**
-     * Désérialise un JSON vers un type générique (ex: {@code List<Subtitle>}).
+     * Deserializes JSON into a generic type (e.g., {@code List<Subtitle>}).
      *
-     * <p>Exemple :</p>
+     * <p>Example:</p>
      * <pre>{@code
      * List<Subtitle> subtitles = JsonMapper.fromJson(json, new TypeReference<>() {});
      * }</pre>
      *
-     * @param json    Chaîne JSON à désérialiser.
-     * @param typeRef Référence de type générique Jackson.
-     * @param <T>     Type de retour.
-     * @return Instance désérialisée.
-     * @throws MappingException si le JSON est invalide ou incompatible.
+     * @param json    JSON string to deserialize.
+     * @param typeRef Jackson generic type reference.
+     * @param <T>     Return type.
+     * @return Deserialized instance.
+     * @throws MappingException if JSON is invalid or incompatible.
      */
     public static <T> T fromJson(String json, TypeReference<T> typeRef) {
         try {

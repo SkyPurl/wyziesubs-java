@@ -18,14 +18,14 @@ import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
 /**
- * Implémentation asynchrone de {@link WyzieSubsClient} basée sur
- * {@link java.net.http.HttpClient} natif (Java 11+).
+ * Asynchronous implementation of {@link WyzieSubsClient} based on
+ * the native {@link java.net.http.HttpClient} (Java 11+).
  *
- * <p>Toutes les requêtes sont exécutées de manière non-bloquante via
- * {@code sendAsync()}. Les Virtual Threads de Java 25 maximisent le
- * débit sans overhead de threads OS.</p>
+ * <p>All requests are executed in a non-blocking manner using
+ * {@code sendAsync()}. Java 25 Virtual Threads maximize
+ * throughput without OS thread overhead.</p>
  *
- * <p>Instanciation :</p>
+ * <p>Instantiation:</p>
  * <pre>{@code
  * WyzieSubsClient client = new DefaultWyzieSubsClient(
  *         WyzieSubsConfig.defaultWithApiKey("my-api-key")
@@ -40,23 +40,23 @@ public final class DefaultWyzieSubsClient implements WyzieSubsClient {
     private final WyzieSubsConfig config;
 
     /**
-     * Crée un nouveau client avec la configuration fournie.
+     * Creates a new client with the provided configuration.
      *
-     * @param config Configuration du client (non nulle).
-     * @throws NullPointerException si {@code config} est nulle.
+     * @param config Client configuration (must not be null).
+     * @throws NullPointerException if {@code config} is null.
      */
     public DefaultWyzieSubsClient(WyzieSubsConfig config) {
         this.config = Objects.requireNonNull(config, "config must not be null");
     }
 
-    // -------------------------------------------------------------------------
+    // ----
     // getEnabledSources
-    // -------------------------------------------------------------------------
+    // ----
 
     /**
      * {@inheritDoc}
      *
-     * <p>Appel : {@code GET {baseUrl}/sources}</p>
+     * <p>Endpoint: {@code GET {baseUrl}/sources}</p>
      */
     @Override
     public CompletableFuture<SourcesResponse> getEnabledSources() {
@@ -75,14 +75,14 @@ public final class DefaultWyzieSubsClient implements WyzieSubsClient {
                 });
     }
 
-    // -------------------------------------------------------------------------
+    // ----
     // search
-    // -------------------------------------------------------------------------
+    // ----
 
     /**
      * {@inheritDoc}
      *
-     * <p>Appel : {@code GET {baseUrl}/search?id=...&key=...}</p>
+     * <p>Endpoint: {@code GET {baseUrl}/search?id=...&key=...}</p>
      */
     @Override
     public CompletableFuture<List<Subtitle>> search(SearchRequest searchRequest) {
@@ -105,15 +105,15 @@ public final class DefaultWyzieSubsClient implements WyzieSubsClient {
                 });
     }
 
-    // -------------------------------------------------------------------------
+    // ----
     // download
-    // -------------------------------------------------------------------------
+    // ----
 
     /**
      * {@inheritDoc}
      *
-     * <p>Le fichier est écrit directement sur le disque via
-     * {@link HttpResponse.BodyHandlers#ofFile(Path)} sans passer en mémoire.</p>
+     * <p>The file is written directly to disk via
+     * {@link HttpResponse.BodyHandlers#ofFile(Path)} to minimize memory footprint.</p>
      */
     @Override
     public CompletableFuture<Path> download(Subtitle subtitle, Path destination) {
@@ -134,17 +134,17 @@ public final class DefaultWyzieSubsClient implements WyzieSubsClient {
                 });
     }
 
-    // -------------------------------------------------------------------------
-    // Méthode utilitaire privée
-    // -------------------------------------------------------------------------
+    // ----
+    // Private Utility Methods
+    // ----
 
     /**
-     * Valide que le code de statut HTTP est dans la plage 2xx.
-     * Lance une {@link ApiException} dans le cas contraire.
+     * Validates that the HTTP status code is within the 2xx range.
+     * Throws an {@link ApiException} otherwise.
      *
-     * @param response La réponse HTTP à valider.
-     * @param <T>      Type du body de la réponse.
-     * @throws ApiException si le statut HTTP est hors de la plage 2xx.
+     * @param response The HTTP response to validate.
+     * @param <T>      The response body type.
+     * @throws ApiException if the HTTP status is outside the 2xx range.
      */
     private <T> void validateStatus(HttpResponse<T> response) {
         int status = response.statusCode();

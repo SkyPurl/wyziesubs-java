@@ -6,12 +6,12 @@ import java.nio.charset.StandardCharsets;
 import java.util.StringJoiner;
 
 /**
- * Constructeur d'URL fluide et sécurisé pour les requêtes API.
+ * Fluent and safe URL builder for API requests.
  *
- * <p>Encode automatiquement les clés et valeurs en UTF-8 via {@link URLEncoder}.
- * Les paramètres à valeur {@code null} sont silencieusement ignorés.</p>
+ * <p>Automatically encodes keys and values in UTF-8 using {@link URLEncoder}.
+ * Parameters with {@code null} values are silently ignored.</p>
  *
- * <p>Exemple :</p>
+ * <p>Example:</p>
  * <pre>{@code
  * URI uri = UrlBuilder.of("https://sub.wyzie.io/search")
  *         .addQueryParam("id", "tt1234567")
@@ -30,22 +30,22 @@ public final class UrlBuilder {
     }
 
     /**
-     * Crée un nouveau {@code UrlBuilder} à partir d'une URL de base.
+     * Creates a new {@code UrlBuilder} from a base URL.
      *
-     * @param baseUrl URL de base (ex: {@code "https://sub.wyzie.io/search"}).
-     * @return Une nouvelle instance de {@code UrlBuilder}.
+     * @param baseUrl Base URL (e.g., {@code "https://sub.wyzie.io/search"}).
+     * @return A new {@code UrlBuilder} instance.
      */
     public static UrlBuilder of(String baseUrl) {
         return new UrlBuilder(baseUrl);
     }
 
     /**
-     * Ajoute un paramètre de requête encodé en UTF-8.
-     * Si {@code value} est {@code null}, l'appel est ignoré silencieusement.
+     * Adds a UTF-8 encoded query parameter.
+     * If {@code value} is {@code null}, the call is silently ignored.
      *
-     * @param key   Nom du paramètre (sera encodé).
-     * @param value Valeur du paramètre (sera encodée). {@code null} = ignoré.
-     * @return {@code this} pour le chaînage.
+     * @param key   Parameter name (will be encoded).
+     * @param value Parameter value (will be encoded). {@code null} = ignored.
+     * @return {@code this} for method chaining.
      */
     public UrlBuilder addQueryParam(String key, String value) {
         if (value == null) {
@@ -58,10 +58,10 @@ public final class UrlBuilder {
     }
 
     /**
-     * Construit et retourne l'URI final.
-     * Le séparateur {@code ?} n'est ajouté que si au moins un paramètre est présent.
+     * Builds and returns the final URI.
+     * The {@code ?} separator is only added if at least one parameter is present.
      *
-     * @return {@link URI} prêt à être passé à {@link java.net.http.HttpClient}.
+     * @return {@link URI} ready for {@link java.net.http.HttpClient}.
      */
     public URI build() {
         String query = queryJoiner.toString();

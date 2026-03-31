@@ -6,30 +6,30 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
- * Représente un sous-titre retourné par l'endpoint {@code GET /search}.
+ * Represents a subtitle returned by the {@code GET /search} endpoint.
  *
- * <p>Les champs {@code format}, {@code source} et {@code origin} sont volontairement
- * typés en {@code String} (et non en enums) pour garantir la résilience de la
- * désérialisation si l'API introduit de nouvelles valeurs.</p>
+ * <p>Fields such as {@code format}, {@code source}, and {@code origin} are
+ * intentionally typed as {@code String} (rather than enums) to ensure
+ * deserialization resilience if the API introduces new values.</p>
  *
- * <p>Tous les champs sont nullable sauf {@code id} et {@code url}.</p>
+ * <p>All fields are nullable except for {@code id} and {@code url}.</p>
  *
- * @param id               Identifiant unique du sous-titre.
- * @param url              URL de téléchargement direct.
- * @param flagUrl          URL du drapeau de la langue (peut être {@code null}).
- * @param format           Format du fichier (ex: {@code "srt"}, {@code "ass"}).
- * @param encoding         Encodage du fichier (ex: {@code "UTF-8"}).
- * @param display          Nom affiché de la langue (ex: {@code "English"}).
- * @param language         Code ISO 639-1 de la langue (ex: {@code "en"}).
- * @param media            Titre du média associé.
- * @param isHearingImpaired Indique si le sous-titre est adapté aux malentendants.
- * @param source           Source du sous-titre (ex: {@code "opensubtitles"}).
- * @param release          Release principale associée.
- * @param releases         Liste de toutes les releases compatibles.
- * @param fileName         Nom du fichier de sous-titre.
- * @param origin           Origine du média (ex: {@code "WEB-DL"}).
- * @param matchedRelease   Release qui a déclenché le match (peut être {@code null}).
- * @param matchedFilter    Filtre qui a déclenché le match (peut être {@code null}).
+ * @param id                Unique identifier for the subtitle.
+ * @param url               Direct download URL.
+ * @param flagUrl           URL for the language flag icon (may be {@code null}).
+ * @param format            File format (e.g., {@code "srt"}, {@code "ass"}).
+ * @param encoding          File encoding (e.g., {@code "UTF-8"}).
+ * @param display           Display name of the language (e.g., {@code "English"}).
+ * @param language          ISO 639-1 language code (e.g., {@code "en"}).
+ * @param media             Title of the associated media.
+ * @param isHearingImpaired Indicates if the subtitle is for the hearing impaired.
+ * @param source            Subtitle provider (e.g., {@code "opensubtitles"}).
+ * @param release           Primary associated release.
+ * @param releases          List of all compatible releases.
+ * @param fileName          Subtitle filename.
+ * @param origin            Media origin (e.g., {@code "WEB-DL"}).
+ * @param matchedRelease    The specific release that triggered the match.
+ * @param matchedFilter     The specific filter that triggered the match.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public record Subtitle(

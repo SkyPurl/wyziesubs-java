@@ -4,14 +4,14 @@ import java.net.http.HttpClient;
 import java.util.Objects;
 
 /**
- * Configuration immuable du client {@link io.github.skypurl.wyziesubs.WyzieSubsClient}.
+ * Immutable configuration for the {@link io.github.skypurl.wyziesubs.WyzieSubsClient}.
  *
- * <p>Utilise un pattern Builder strict. Exemple d'utilisation :</p>
+ * <p>This class uses a strict Builder pattern. Usage examples:</p>
  * <pre>{@code
- * // Méthode rapide (valeurs par défaut)
+ * // Quick setup with default values
  * WyzieSubsConfig config = WyzieSubsConfig.defaultWithApiKey("my-api-key");
  *
- * // Méthode Builder (configuration avancée)
+ * // Advanced configuration via Builder
  * WyzieSubsConfig config = WyzieSubsConfig.builder("my-api-key")
  *         .baseUrl("https://custom.instance.io/api")
  *         .httpClient(myCustomHttpClient)
@@ -32,37 +32,37 @@ public final class WyzieSubsConfig {
         this.httpClient = Objects.requireNonNull(builder.httpClient, "httpClient must not be null");
     }
 
-    // -------------------------------------------------------------------------
-    // Méthode de commodité
-    // -------------------------------------------------------------------------
+    // ----
+    // Factory Methods
+    // ----
 
     /**
-     * Crée une configuration avec les valeurs par défaut et l'API key fournie.
+     * Creates a configuration instance using default settings and the provided API key.
      *
-     * @param apiKey Clé d'API Wyzie Subs (non nulle).
-     * @return Une instance {@code WyzieSubsConfig} prête à l'emploi.
+     * @param apiKey Wyzie Subs API key (must not be null).
+     * @return A ready-to-use {@code WyzieSubsConfig} instance.
      */
     public static WyzieSubsConfig defaultWithApiKey(String apiKey) {
         return builder(apiKey).build();
     }
 
-    // -------------------------------------------------------------------------
-    // Point d'entrée du Builder
-    // -------------------------------------------------------------------------
+    // ----
+    // Builder Entry Point
+    // ----
 
     /**
-     * Retourne un nouveau {@link Builder} initialisé avec l'API key obligatoire.
+     * Returns a new {@link Builder} initialized with the required API key.
      *
-     * @param apiKey Clé d'API Wyzie Subs (non nulle).
-     * @return Un {@link Builder} pré-configuré avec les valeurs par défaut.
+     * @param apiKey Wyzie Subs API key (must not be null).
+     * @return A {@link Builder} pre-configured with default values.
      */
     public static Builder builder(String apiKey) {
         return new Builder(apiKey);
     }
 
-    // -------------------------------------------------------------------------
+    // ----
     // Getters
-    // -------------------------------------------------------------------------
+    // ----
 
     public String getApiKey() {
         return apiKey;
@@ -76,13 +76,13 @@ public final class WyzieSubsConfig {
         return httpClient;
     }
 
-    // -------------------------------------------------------------------------
-    // Builder
-    // -------------------------------------------------------------------------
+    // ----
+    // Builder Implementation
+    // ----
 
     /**
-     * Builder immuable pour {@link WyzieSubsConfig}.
-     * Les valeurs par défaut sont appliquées à l'initialisation du Builder.
+     * Immutable builder for {@link WyzieSubsConfig}.
+     * Default values are applied upon builder initialization.
      */
     public static final class Builder {
 
@@ -97,10 +97,10 @@ public final class WyzieSubsConfig {
         }
 
         /**
-         * Surcharge l'URL de base (utile pour les instances auto-hébergées).
+         * Overrides the default base URL. Useful for self-hosted instances.
          *
-         * @param baseUrl URL de base de l'API (ex: {@code "https://my-instance.io"}).
-         * @return {@code this} pour le chaînage.
+         * @param baseUrl API base URL (e.g., {@code "https://my-instance.io"}).
+         * @return {@code this} for method chaining.
          */
         public Builder baseUrl(String baseUrl) {
             this.baseUrl = baseUrl;
@@ -108,10 +108,10 @@ public final class WyzieSubsConfig {
         }
 
         /**
-         * Fournit un {@link HttpClient} personnalisé (proxy, SSL, timeouts...).
+         * Provides a custom {@link HttpClient} for specific needs (proxy, SSL, timeouts, etc.).
          *
-         * @param httpClient Instance {@link HttpClient} à utiliser.
-         * @return {@code this} pour le chaînage.
+         * @param httpClient The {@link HttpClient} instance to use.
+         * @return {@code this} for method chaining.
          */
         public Builder httpClient(HttpClient httpClient) {
             this.httpClient = httpClient;
@@ -119,10 +119,10 @@ public final class WyzieSubsConfig {
         }
 
         /**
-         * Construit et retourne l'instance {@link WyzieSubsConfig} immuable.
+         * Builds and returns the immutable {@link WyzieSubsConfig} instance.
          *
-         * @return Une nouvelle instance {@link WyzieSubsConfig}.
-         * @throws NullPointerException si {@code apiKey} est nulle.
+         * @return A new {@link WyzieSubsConfig} instance.
+         * @throws NullPointerException if {@code apiKey} is null.
          */
         public WyzieSubsConfig build() {
             return new WyzieSubsConfig(this);

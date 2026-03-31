@@ -3,7 +3,7 @@ package io.github.skypurl.wyziesubs.enums;
 import io.github.skypurl.wyziesubs.util.ApiParameter;
 
 /**
- * Origine du média (qualité de la source vidéo).
+ * Media origin (video source quality).
  */
 public enum MediaOrigin implements ApiParameter {
 

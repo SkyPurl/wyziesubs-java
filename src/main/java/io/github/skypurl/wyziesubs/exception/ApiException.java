@@ -1,16 +1,15 @@
 package io.github.skypurl.wyziesubs.exception;
 
 /**
- * Exception levée lorsque l'API Wyzie Subs retourne une réponse HTTP d'erreur
- * (codes 4xx ou 5xx).
+ * Thrown when the Wyzie Subs API returns an error HTTP response (4xx or 5xx).
  *
- * <p>Exemple d'utilisation dans un {@code catch} :</p>
+ * <p>Usage example in an {@code exceptionally} block:</p>
  * <pre>{@code
  * client.search(request)
  *       .exceptionally(ex -> {
  *           if (ex.getCause() instanceof ApiException apiEx) {
- *               System.err.println("HTTP " + apiEx.getStatusCode());
- *               System.err.println("Body : " + apiEx.getResponseBody());
+ *               System.err.println("HTTP Status: " + apiEx.getStatusCode());
+ *               System.err.println("Response Body: " + apiEx.getResponseBody());
  *           }
  *           return List.of();
  *       });
@@ -22,10 +21,10 @@ public final class ApiException extends WyzieSubsException {
     private final String responseBody;
 
     /**
-     * Crée une {@code ApiException} à partir d'une réponse HTTP en erreur.
+     * Constructs an {@code ApiException} from an error HTTP response.
      *
-     * @param statusCode   Code de statut HTTP reçu (ex: 401, 404, 500).
-     * @param responseBody Corps brut de la réponse (peut être vide, jamais {@code null}).
+     * @param statusCode   HTTP status code (e.g., 401, 404, 500).
+     * @param responseBody Raw response body (may be empty, never {@code null}).
      */
     public ApiException(int statusCode, String responseBody) {
         super("API request failed with HTTP %d : %s".formatted(statusCode, responseBody));
@@ -34,18 +33,18 @@ public final class ApiException extends WyzieSubsException {
     }
 
     /**
-     * Retourne le code de statut HTTP de la réponse en erreur.
+     * Returns the HTTP status code of the error response.
      *
-     * @return Code HTTP (ex: {@code 401}, {@code 404}, {@code 500}).
+     * @return HTTP status code (e.g., {@code 401}, {@code 404}, {@code 500}).
      */
     public int getStatusCode() {
         return statusCode;
     }
 
     /**
-     * Retourne le corps brut de la réponse HTTP en erreur.
+     * Returns the raw HTTP response body.
      *
-     * @return Corps de la réponse, potentiellement vide mais jamais {@code null}.
+     * @return Response body, potentially empty but never {@code null}.
      */
     public String getResponseBody() {
         return responseBody;

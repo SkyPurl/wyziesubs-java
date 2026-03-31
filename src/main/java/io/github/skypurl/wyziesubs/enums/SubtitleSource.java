@@ -3,8 +3,8 @@ package io.github.skypurl.wyziesubs.enums;
 import io.github.skypurl.wyziesubs.util.ApiParameter;
 
 /**
- * Sources de sous-titres disponibles sur l'API Wyzie Subs.
- * {@code ALL} permet d'interroger toutes les sources simultanément.
+ * Subtitle providers available on the Wyzie Subs API.
+ * Use {@code ALL} to query all sources simultaneously.
  */
 public enum SubtitleSource implements ApiParameter {
 

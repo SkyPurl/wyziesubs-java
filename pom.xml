@@ -5,17 +5,17 @@
          https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <!-- ===== Coordonnées du projet ===== -->
+    <!-- ==== Project Coordinates ==== -->
     <groupId>io.github.skypurl</groupId>
     <artifactId>wyziesubs-java</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version> 
     <packaging>jar</packaging>
 
     <name>WyzieSubs Java SDK</name>
     <description>A Java SDK for the WyzieSubs subtitle API</description>
     <url>https://github.com/SkyPurl/wyziesubs-java</url>
 
-    <!-- ===== Licences ===== -->
+    <!-- ==== Licenses ==== -->
     <licenses>
         <license>
             <name>MIT License</name>
@@ -23,7 +23,7 @@
         </license>
     </licenses>
 
-    <!-- ===== Développeurs (requis pour Maven Central) ===== -->
+    <!-- ==== Developers (Required for Maven Central) ==== -->
     <developers>
         <developer>
             <id>SkyPurl</id>
@@ -32,37 +32,37 @@
         </developer>
     </developers>
 
-    <!-- ===== SCM (requis pour Maven Central) ===== -->
+    <!-- ==== SCM (Required for Maven Central) ==== -->
     <scm>
         <connection>scm:git:git://github.com/SkyPurl/wyziesubs-java.git</connection>
         <developerConnection>scm:git:ssh://git@github.com:SkyPurl/wyziesubs-java.git</developerConnection>
         <url>https://github.com/SkyPurl/wyziesubs-java</url>
     </scm>
 
-    <!-- ===== Propriétés ===== -->
+    <!-- ==== Properties ==== -->
     <properties>
         <java.version>25</java.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-        <!-- Versions des dépendances -->
+        <!-- Dependency Versions -->
         <jackson.version>2.18.2</jackson.version>
         <junit.version>5.11.4</junit.version>
         <mockito.version>5.14.2</mockito.version>
     </properties>
 
-    <!-- ===== Dépendances ===== -->
+    <!-- ==== Dependencies ==== -->
     <dependencies>
 
-        <!-- Jackson : seule dépendance runtime -->
+        <!-- Jackson: Only runtime dependency -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
             <version>${jackson.version}</version>
         </dependency>
 
-        <!-- Tests -->
+        <!-- Testing -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
@@ -84,34 +84,32 @@
 
     </dependencies>
 
-    <!-- ===== Build & Plugins ===== -->
+    <!-- ==== Build & Plugins ==== -->
     <build>
         <plugins>
 
-            <!-- Compiler avec support Java 25 -->
+            <!-- Compiler with Java 25 support -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.13.0</version>
                 <configuration>
                     <release>25</release>
-                    <!-- Active les preview features si nécessaire -->
-                    <!-- <compilerArgs><arg>- -enable-preview</arg></compilerArgs> -->
                 </configuration>
             </plugin>
 
-            <!-- Tests avec Surefire -->
+            <!-- Testing with Surefire -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.5.5</version>
                 <configuration>
-                    <!-- Force Byte Buddy à accepter Java 25 et cache les warnings Java Agents -->
+                    <!-- Force Byte Buddy to accept Java 25 and suppress Java Agent warnings -->
                     <argLine>-Dnet.bytebuddy.experimental=true -XX:+EnableDynamicAgentLoading</argLine>
                 </configuration>
             </plugin>
 
-            <!-- Sources JAR (requis Maven Central) -->
+            <!-- Sources JAR (Required for Maven Central) -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
@@ -124,7 +122,7 @@
                 </executions>
             </plugin>
 
-            <!-- Javadoc JAR (requis Maven Central) -->
+            <!-- Javadoc JAR (Required for Maven Central) -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
@@ -137,7 +135,7 @@
                 </executions>
             </plugin>
 
-            <!-- Publication sur Maven Central (nouveau portail) -->
+            <!-- Maven Central Publishing (New Portal) -->
             <plugin>
                 <groupId>org.sonatype.central</groupId>
                 <artifactId>central-publishing-maven-plugin</artifactId>
@@ -145,21 +143,21 @@
                 <extensions>true</extensions>
                 <configuration>
                     <publishingServerId>central</publishingServerId>
-                    <autoPublish>false</autoPublish> <!-- Manuel pour contrôle -->
+                    <autoPublish>false</autoPublish>
                 </configuration>
             </plugin>
 
         </plugins>
     </build>
 
-    <!-- ===== Profils Maven ===== -->
+    <!-- ==== Maven Profiles ==== -->
     <profiles>
-        <!-- Profil de release : signature GPG + déploiement Maven Central -->
+        <!-- Release profile: GPG signing + Maven Central deployment -->
         <profile>
             <id>release</id>
             <build>
                 <plugins>
-                    <!-- GPG Signing (uniquement pour les releases) -->
+                    <!-- GPG Signing (Release only) -->
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-gpg-plugin</artifactId>

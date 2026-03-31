@@ -5,10 +5,10 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.util.List;
 
 /**
- * Réponse de l'endpoint {@code GET /sources}.
- * Exemple : {@code {"sources": ["subdl", "subf2m", "opensubtitles"]}}
+ * Response from the {@code GET /sources} endpoint.
+ * Example: {@code {"sources": ["subdl", "subf2m", "opensubtitles"]}}
  *
- * @param sources Liste des noms de sources activées sur l'instance API.
+ * @param sources List of enabled source names on the API instance.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public record SourcesResponse(

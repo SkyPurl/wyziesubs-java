@@ -3,7 +3,7 @@ package io.github.skypurl.wyziesubs.enums;
 import io.github.skypurl.wyziesubs.util.ApiParameter;
 
 /**
- * Formats de sous-titres supportés par l'API Wyzie Subs.
+ * Subtitle formats supported by the Wyzie Subs API.
  */
 public enum SubtitleFormat implements ApiParameter {
 
