@@ -57,7 +57,12 @@ class ApiParameterContractTest {
 
                 Arguments.of("MediaOrigin.WEB", MediaOrigin.WEB, "WEB"),
                 Arguments.of("MediaOrigin.BLURAY", MediaOrigin.BLURAY, "BLURAY"),
-                Arguments.of("MediaOrigin.DVD", MediaOrigin.DVD, "DVD")
+                Arguments.of("MediaOrigin.DVD", MediaOrigin.DVD, "DVD"),
+
+                Arguments.of("SubtitleEncoding.UTF_8", SubtitleEncoding.UTF_8, "utf-8"),
+                Arguments.of("SubtitleEncoding.LATIN_1", SubtitleEncoding.LATIN_1, "latin-1"),
+                Arguments.of("SubtitleEncoding.UTF_16", SubtitleEncoding.UTF_16, "utf-16"),
+                Arguments.of("SubtitleEncoding.ASCII", SubtitleEncoding.ASCII, "ascii")
         );
     }
 }

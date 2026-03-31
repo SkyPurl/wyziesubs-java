@@ -4,6 +4,7 @@ import io.github.skypurl.wyziesubs.DefaultWyzieSubsClient;
 import io.github.skypurl.wyziesubs.WyzieSubsClient;
 import io.github.skypurl.wyziesubs.config.WyzieSubsConfig;
 import io.github.skypurl.wyziesubs.enums.Language;
+import io.github.skypurl.wyziesubs.enums.SubtitleEncoding;
 import io.github.skypurl.wyziesubs.enums.SubtitleFormat;
 import io.github.skypurl.wyziesubs.enums.SubtitleSource;
 import io.github.skypurl.wyziesubs.model.SourcesResponse;
@@ -92,6 +93,7 @@ public class DemoMain {
                 .languages(Language.ENGLISH, Language.FRENCH)
                 .formats(SubtitleFormat.SRT)
                 .sources(SubtitleSource.OPENSUBTITLES, SubtitleSource.SUBDL)
+                .encoding(SubtitleEncoding.UTF_8)
                 .build();
 
         try {
@@ -113,6 +115,7 @@ public class DemoMain {
                             System.out.println("   ├─ Language: " + subtitle.display() + " (" + subtitle.language() + ")");
                             System.out.println("   ├─ Format: " + subtitle.format());
                             System.out.println("   ├─ Source: " + subtitle.source());
+                            System.out.println("   ├─ Encoding: " + subtitle.encoding());
                             System.out.println("   ├─ Filename: " + subtitle.fileName());
                             System.out.println("   └─ URL: " + subtitle.url());
                             System.out.println();

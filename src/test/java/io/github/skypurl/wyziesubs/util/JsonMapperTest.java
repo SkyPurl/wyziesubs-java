@@ -52,7 +52,8 @@ class JsonMapperTest {
                 [
                   {
                     "id": "1955024019",
-                    "url": "https://sub.wyzie.io/c/198e0c4d/the.martian.srt",
+                    "url": "https://sub.wyzie.io/c/198e0c4d/id/1955024019?format=srt&encoding=UTF-8",
+                    "flagUrl": "https://flagsapi.com/US/flat/24.png",
                     "format": "srt",
                     "encoding": "UTF-8",
                     "display": "English",
@@ -60,8 +61,12 @@ class JsonMapperTest {
                     "media": "The Martian",
                     "isHearingImpaired": false,
                     "source": "opensubtitles",
-                    "releases": ["The.Martian.WEB-DL"],
-                    "fileName": "the.martian.srt",
+                    "release": "The.Martian.2015.1080p.WEB-DL",
+                    "releases": ["The.Martian.2015.1080p.WEB-DL"],
+                    "fileName": "the.martian.2015.1080p.web-dl.srt",
+                    "origin": "WEB-DL",
+                    "matchedRelease": "The.Martian.2015.1080p.WEB-DL",
+                    "matchedFilter": "martian",
                     "unknownField": "ignored"
                   }
                 ]
@@ -74,10 +79,21 @@ class JsonMapperTest {
 
         Subtitle subtitle = result.getFirst();
         assertEquals("1955024019", subtitle.id());
-        assertEquals("https://sub.wyzie.io/c/198e0c4d/the.martian.srt", subtitle.url());
+        assertEquals("https://sub.wyzie.io/c/198e0c4d/id/1955024019?format=srt&encoding=UTF-8", subtitle.url());
+        assertEquals("https://flagsapi.com/US/flat/24.png", subtitle.flagUrl());
         assertEquals("srt", subtitle.format());
+        assertEquals("UTF-8", subtitle.encoding());
+        assertEquals("English", subtitle.display());
         assertEquals("en", subtitle.language());
+        assertEquals("The Martian", subtitle.media());
         assertFalse(subtitle.isHearingImpaired());
+        assertEquals("opensubtitles", subtitle.source());
+        assertEquals("The.Martian.2015.1080p.WEB-DL", subtitle.release());
+        assertEquals(List.of("The.Martian.2015.1080p.WEB-DL"), subtitle.releases());
+        assertEquals("the.martian.2015.1080p.web-dl.srt", subtitle.fileName());
+        assertEquals("WEB-DL", subtitle.origin());
+        assertEquals("The.Martian.2015.1080p.WEB-DL", subtitle.matchedRelease());
+        assertEquals("martian", subtitle.matchedFilter());
     }
 
     @Test

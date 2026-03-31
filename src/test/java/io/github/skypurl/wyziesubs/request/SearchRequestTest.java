@@ -2,6 +2,7 @@ package io.github.skypurl.wyziesubs.request;
 
 import io.github.skypurl.wyziesubs.enums.Language;
 import io.github.skypurl.wyziesubs.enums.MediaOrigin;
+import io.github.skypurl.wyziesubs.enums.SubtitleEncoding;
 import io.github.skypurl.wyziesubs.enums.SubtitleFormat;
 import io.github.skypurl.wyziesubs.enums.SubtitleSource;
 import io.github.skypurl.wyziesubs.util.UrlBuilder;
@@ -50,7 +51,7 @@ class SearchRequestTest {
                 .languages(Language.FRENCH, Language.ENGLISH)
                 .formats(SubtitleFormat.SRT, SubtitleFormat.VTT)
                 .hi(false)
-                .encoding("UTF-8")
+                .encoding(SubtitleEncoding.UTF_8)
                 .sources(SubtitleSource.OPENSUBTITLES, SubtitleSource.SUBDL)
                 .releases("WEB-DL", "BLURAY")
                 .fileName("the.martian.srt")
@@ -64,7 +65,7 @@ class SearchRequestTest {
         assertEquals(List.of(Language.FRENCH, Language.ENGLISH), request.getLanguages());
         assertEquals(List.of(SubtitleFormat.SRT, SubtitleFormat.VTT), request.getFormats());
         assertFalse(request.getHi());
-        assertEquals("UTF-8", request.getEncoding());
+        assertEquals(SubtitleEncoding.UTF_8, request.getEncoding());
         assertEquals(List.of(SubtitleSource.OPENSUBTITLES, SubtitleSource.SUBDL), request.getSources());
         assertEquals(List.of("WEB-DL", "BLURAY"), request.getReleases());
         assertEquals("the.martian.srt", request.getFileName());
@@ -115,7 +116,7 @@ class SearchRequestTest {
                 .languages(Language.FRENCH, Language.ENGLISH)
                 .formats(SubtitleFormat.SRT, SubtitleFormat.VTT)
                 .hi(false)
-                .encoding("UTF-8")
+                .encoding(SubtitleEncoding.UTF_8)
                 .sources(SubtitleSource.OPENSUBTITLES, SubtitleSource.SUBDL)
                 .releases("WEB-DL", "BLURAY")
                 .fileName("the martian.srt")
@@ -131,7 +132,7 @@ class SearchRequestTest {
         assertTrue(raw.contains("language=fr%2Cen") || raw.contains("language=fr,en"));
         assertTrue(raw.contains("format=srt%2Cvtt") || raw.contains("format=srt,vtt"));
         assertTrue(raw.contains("hi=false"));
-        assertTrue(raw.contains("encoding=UTF-8"));
+        assertTrue(raw.contains("encoding=utf-8"));
         assertTrue(raw.contains("source=opensubtitles%2Csubdl") || raw.contains("source=opensubtitles,subdl"));
         assertTrue(raw.contains("releases=WEB-DL%2CBLURAY") || raw.contains("releases=WEB-DL,BLURAY"));
         assertTrue(raw.contains("fileName=the+martian.srt") || raw.contains("fileName=the%20martian.srt"));

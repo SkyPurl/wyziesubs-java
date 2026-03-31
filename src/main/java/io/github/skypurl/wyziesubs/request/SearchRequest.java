@@ -2,6 +2,7 @@ package io.github.skypurl.wyziesubs.request;
 
 import io.github.skypurl.wyziesubs.enums.Language;
 import io.github.skypurl.wyziesubs.enums.MediaOrigin;
+import io.github.skypurl.wyziesubs.enums.SubtitleEncoding;
 import io.github.skypurl.wyziesubs.enums.SubtitleFormat;
 import io.github.skypurl.wyziesubs.enums.SubtitleSource;
 import io.github.skypurl.wyziesubs.util.ApiParameter;
@@ -34,7 +35,7 @@ public final class SearchRequest {
     private final List<Language> languages;
     private final List<SubtitleFormat> formats;
     private final Boolean hi;
-    private final String encoding;
+    private final SubtitleEncoding encoding;
     private final List<SubtitleSource> sources;
     private final List<String> releases;
     private final String fileName;
@@ -89,7 +90,7 @@ public final class SearchRequest {
         urlBuilder.addQueryParam("language", joinParameters(languages));
         urlBuilder.addQueryParam("format",   joinParameters(formats));
         urlBuilder.addQueryParam("hi",       hi       != null ? hi.toString()      : null);
-        urlBuilder.addQueryParam("encoding", encoding);
+        urlBuilder.addQueryParam("encoding", encoding != null ? encoding.getValue() : null);
         urlBuilder.addQueryParam("source",   joinParameters(sources));
         urlBuilder.addQueryParam("fileName", fileName);
         urlBuilder.addQueryParam("origin",   joinParameters(origins));
@@ -132,7 +133,7 @@ public final class SearchRequest {
     public List<Language> getLanguages()     { return languages; }
     public List<SubtitleFormat> getFormats() { return formats;   }
     public Boolean getHi()                   { return hi;        }
-    public String getEncoding()              { return encoding;  }
+    public SubtitleEncoding getEncoding()    { return encoding;  }
     public List<SubtitleSource> getSources() { return sources;   }
     public List<String> getReleases()        { return releases;  }
     public String getFileName()              { return fileName;  }
@@ -151,7 +152,7 @@ public final class SearchRequest {
         private final List<Language> languages       = new ArrayList<>();
         private final List<SubtitleFormat> formats   = new ArrayList<>();
         private Boolean hi;
-        private String encoding;
+        private SubtitleEncoding encoding;
         private final List<SubtitleSource> sources   = new ArrayList<>();
         private final List<String> releases          = new ArrayList<>();
         private String fileName;
@@ -165,7 +166,7 @@ public final class SearchRequest {
         public Builder season(int season)           { this.season = season;     return this; }
         public Builder episode(int episode)         { this.episode = episode;   return this; }
         public Builder hi(boolean hi)               { this.hi = hi;             return this; }
-        public Builder encoding(String encoding)    { this.encoding = encoding; return this; }
+        public Builder encoding(SubtitleEncoding encoding) { this.encoding = encoding; return this; }
         public Builder fileName(String fileName)    { this.fileName = fileName; return this; }
         public Builder refresh(boolean refresh)     { this.refresh = refresh;   return this; }
 
