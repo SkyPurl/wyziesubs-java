@@ -3,9 +3,7 @@ package io.github.skypurl.wyziesubs.enums;
 import io.github.skypurl.wyziesubs.util.ApiParameter;
 
 /**
- * Supported languages (ISO 639-1 codes).
- * Note: {@link io.github.skypurl.wyziesubs.model.Subtitle#language()} returns a {@code String}
- * for better resilience during deserialization.
+ * Supported subtitle languages (ISO 639-1 codes).
  */
 public enum Language implements ApiParameter {
 
@@ -16,13 +14,32 @@ public enum Language implements ApiParameter {
     ITALIAN("it"),
     PORTUGUESE("pt"),
     RUSSIAN("ru"),
-    JAPANESE("ja"),
-    CHINESE_SIMPLIFIED("zh"),
     ARABIC("ar"),
+    CHINESE("zh"),
+    JAPANESE("ja"),
     KOREAN("ko"),
     DUTCH("nl"),
     POLISH("pl"),
-    TURKISH("tr");
+    SWEDISH("sv"),
+    NORWEGIAN("no"),
+    DANISH("da"),
+    FINNISH("fi"),
+    CZECH("cs"),
+    SLOVAK("sk"),
+    HUNGARIAN("hu"),
+    ROMANIAN("ro"),
+    BULGARIAN("bg"),
+    CROATIAN("hr"),
+    SERBIAN("sr"),
+    UKRAINIAN("uk"),
+    TURKISH("tr"),
+    GREEK("el"),
+    HEBREW("he"),
+    PERSIAN("fa"),
+    INDONESIAN("id"),
+    MALAY("ms"),
+    THAI("th"),
+    VIETNAMESE("vi");
 
     private final String value;
 

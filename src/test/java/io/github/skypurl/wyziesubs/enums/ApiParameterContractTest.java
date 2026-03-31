@@ -30,7 +30,7 @@ class ApiParameterContractTest {
                 Arguments.of("Language.PORTUGUESE", Language.PORTUGUESE, "pt"),
                 Arguments.of("Language.RUSSIAN", Language.RUSSIAN, "ru"),
                 Arguments.of("Language.JAPANESE", Language.JAPANESE, "ja"),
-                Arguments.of("Language.CHINESE_SIMPLIFIED", Language.CHINESE_SIMPLIFIED, "zh"),
+                Arguments.of("Language.CHINESE", Language.CHINESE, "zh"),
                 Arguments.of("Language.ARABIC", Language.ARABIC, "ar"),
                 Arguments.of("Language.KOREAN", Language.KOREAN, "ko"),
                 Arguments.of("Language.DUTCH", Language.DUTCH, "nl"),
